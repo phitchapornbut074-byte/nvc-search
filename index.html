@@ -70,14 +70,24 @@
             </tr>
         `).join('');
     }
-
     function searchTable() {
         const word = document.getElementById('search').value.toLowerCase();
-        const filtered = dataList.filter(i => Object.values(i).some(v => String(v).toLowerCase().includes(word)));
+        
+        const filtered = dataList.filter(item => {
+            // เลือกเฉพาะคอลัมน์ที่ต้องการให้ค้นหาได้ (ช่วยลดปัญหาเจอเลขรหัสไปรษณีย์)
+            const name = String(item['ชื่อสถานประกอบการ'] || '').toLowerCase();
+            const benefit = String(item['สวัสดิการ'] || '').toLowerCase();
+            const jobType = String(item['ประเภทงาน'] || '').toLowerCase();
+            const salary = String(item['ค่าแรง'] || '').toLowerCase();
+
+            return name.includes(word) || 
+                benefit.includes(word) || 
+                jobType.includes(word) || 
+                salary.includes(word);
+        });
+        
         showData(filtered);
     }
-
-    getData();
-</script>
+   </script>
 </body>
 </html>
