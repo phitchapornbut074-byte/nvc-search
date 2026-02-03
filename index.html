@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบสืบค้นสถานประกอบการ | วิทยาลัยอาชีวศึกษาหนองคาย</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --primary-dark: #660000;
@@ -18,23 +16,21 @@
 
         body { 
             font-family: 'Sarabun', sans-serif; 
-            background: #f4f7f6;
+            background: #f8f9fa;
             min-height: 100vh;
-            padding: 30px 10px;
+            padding: 30px 15px;
         }
 
-        /* ตกแต่งบัตรรายการหลัก */
         .main-card { 
             border-radius: 20px; 
             border: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             overflow: hidden;
             background: #fff;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: auto;
         }
 
-        /* ส่วนหัวสีแดงเลือดหมูตัดทอง */
         .header { 
             background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
             color: white; 
@@ -44,24 +40,19 @@
         }
 
         .header h2 { font-weight: 700; margin-bottom: 5px; }
-        .header p { font-weight: 300; opacity: 0.9; margin-bottom: 0; }
+        .header .sub-title { color: var(--accent-gold); font-weight: 600; letter-spacing: 1px; }
 
-        /* ส่วนค้นหาและปุ่มพิมพ์ */
-        .action-bar {
-            background: #f8f9fa;
+        .search-container {
+            background: #fff;
             padding: 25px;
             border-bottom: 1px solid #eee;
         }
 
         .form-control {
-            border-radius: 10px;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 8px rgba(128, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 2px solid #eee;
+            background-color: #f9f9f9;
         }
 
         .btn-print { 
@@ -69,65 +60,63 @@
             color: #443300; 
             border: none; 
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 12px;
-            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .btn-print:hover { 
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-
-        /* ตกแต่งตาราง */
-        .table { margin-bottom: 0; }
+        /* ตกแต่งตารางให้ดูเป็นมืออาชีพ */
         .table thead th { 
             background-color: #f1f1f1; 
             color: var(--primary-dark);
-            padding: 15px;
+            padding: 18px 15px;
             font-weight: 700;
+            border-bottom: 2px solid var(--accent-gold);
         }
 
-        .table tbody td { padding: 15px; vertical-align: middle; }
+        .table tbody td { padding: 18px 15px; vertical-align: top; font-size: 0.95rem; }
         
-        .badge-job {
+        .badge-info-custom {
             background-color: #fff4f4;
             color: var(--primary-light);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-weight: 600;
+            display: inline-block;
         }
 
-        /* การตั้งค่าพิมพ์ (สวยงาม) */
+        .salary-text { color: #28a745; font-weight: 700; font-size: 1.05rem; }
+
         @media print {
             .no-print { display: none !important; }
             body { padding: 0; background: white; }
-            .main-card { box-shadow: none; border: none; border-radius: 0; }
-            .header { padding: 20px; }
-            .table th { background: #eee !important; color: black !important; }
+            .main-card { box-shadow: none; border: none; }
+            .table td, .table th { font-size: 11px !important; padding: 8px !important; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid">
     <div class="card main-card">
         <div class="header">
             <h2>วิทยาลัยอาชีวศึกษาหนองคาย</h2>
             <p>NONG KHAI VOCATIONAL COLLEGE</p>
-            <p class="mt-2" style="font-size: 1.1rem; color: var(--accent-gold);">ระบบสืบค้นข้อมูลสถานประกอบการ</p>
+            <p class="sub-title mt-2">ระบบสืบค้นข้อมูลสถานประกอบการและที่พักอาศัย</p>
         </div>
         
-        <div class="action-bar no-print">
+        <div class="search-container no-print">
             <div class="row g-3">
                 <div class="col-md-9">
-                    <input type="text" id="search" class="form-control" 
-                           placeholder="🔍 ค้นหา ชื่อสถานประกอบการ, ประเภทงาน, หรือสวัสดิการ..." 
-                           onkeyup="searchTable()">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">🔍</span>
+                        <input type="text" id="searchInput" class="form-control border-start-0 shadow-none" 
+                               placeholder="ค้นหาชื่อร้าน, ที่อยู่ (เขต/จังหวัด), ตำแหน่งงาน หรือค่าแรง..." 
+                               onkeyup="filterData()">
+                    </div>
                 </div>
                 <div class="col-md-3">
-                    <button onclick="window.print()" class="btn btn-print w-100">🖨️ พิมพ์รายงาน</button>
+                    <button onclick="window.print()" class="btn btn-print w-100">🖨️ พิมพ์รายงานสรุป</button>
                 </div>
             </div>
         </div>
@@ -136,16 +125,16 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="ps-4">สถานประกอบการ</th>
-                        <th>สวัสดิการ</th>
-                        <th>ที่อยู่</th>
-                        <th>ประเภทงาน</th>
-                        <th>ยูนิฟอร์ม</th>
-                        <th class="text-end pe-4">ค่าตอบแทน</th>
+                        <th style="width: 15%;">สถานประกอบการ</th>
+                        <th style="width: 20%;">สวัสดิการ</th>
+                        <th style="width: 20%;">ที่อยู่</th>
+                        <th style="width: 15%;">ประเภทงาน</th>
+                        <th style="width: 15%;">ยูนิฟอร์ม</th>
+                        <th style="width: 15%; text-align: right;">ค่าตอบแทน</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr><td colspan="6" class="text-center p-5 text-muted">กำลังโหลดข้อมูลจากระบบ...</td></tr>
+                    <tr><td colspan="6" class="text-center p-5 text-muted">กำลังเตรียมฐานข้อมูล...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -153,56 +142,49 @@
 </div>
 
 <script>
-    // ⚠️ ลิงก์จาก Google Apps Script ของคุณ ⚠️
     const URL = "https://script.google.com/macros/s/AKfycbwbciXYFvVEVm_QpOjs3l3BwGB2PkPJjBo3ZOaoewi5kYHiFzc5C4xYY6y_sLRHL_QH/exec"; 
+    let allData = [];
 
-    let dataList = [];
-
-    async function getData() {
+    async function fetchData() {
         try {
             const res = await fetch(URL);
-            dataList = await res.json();
-            showData(dataList);
+            allData = await res.json();
+            renderTable(allData);
         } catch (e) {
-            document.getElementById('tableBody').innerHTML = "<tr><td colspan='6' class='text-center p-5 text-danger'>❌ ไม่สามารถเชื่อมต่อฐานข้อมูลได้</td></tr>";
+            document.getElementById('tableBody').innerHTML = "<tr><td colspan='6' class='text-center p-5 text-danger'>ขออภัย ไม่สามารถโหลดข้อมูลได้ในขณะนี้</td></tr>";
         }
     }
 
-    function showData(items) {
+    function renderTable(data) {
         const tbody = document.getElementById('tableBody');
-        if (items.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='6' class='text-center p-5'>ไม่พบข้อมูลที่ค้นหา</td></tr>";
+        if (data.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='6' class='text-center p-5'>ไม่พบข้อมูลที่ท่านกำลังค้นหา</td></tr>";
             return;
         }
-        tbody.innerHTML = items.map(item => `
+        tbody.innerHTML = data.map(item => `
             <tr>
-                <td class="ps-4"><strong>${item['ชื่อสถานประกอบการ'] || '-'}</strong></td>
-                <td><small>${item['สวัสดิการ'] || '-'}</small></td>
-                <td><small class="text-muted">${item['ที่อยู่'] || '-'}</small></td>
-                <td><span class="badge-job">${item['ประเภทงาน'] || '-'}</span></td>
-                <td>${item['ยูนิฟอร์ม'] || '-'}</td>
-                <td class="text-end pe-4 text-success fw-bold">${item['ค่าแรง'] || '-'}</td>
+                <td><strong>${item['ชื่อสถานประกอบการ'] || '-'}</strong></td>
+                <td><small class="text-secondary">${item['สวัสดิการ'] || '-'}</small></td>
+                <td><small>${item['ที่อยู่'] || '-'}</small></td>
+                <td><span class="badge-info-custom">${item['ประเภทงาน'] || '-'}</span></td>
+                <td><small>${item['ยูนิฟอร์ม'] || '-'}</small></td>
+                <td class="text-end salary-text">${item['ค่าแรง'] || '-'}</td>
             </tr>
         `).join('');
     }
 
-    function searchTable() {
-        const word = document.getElementById('search').value.toLowerCase();
-        const filtered = dataList.filter(item => {
-            // เลือกคอลัมน์ที่จะค้นหา (ข้าม 'ที่อยู่' เพื่อไม่ให้ติดรหัสไปรษณีย์)
-            const name = String(item['ชื่อสถานประกอบการ'] || '').toLowerCase();
-            const job = String(item['ประเภทงาน'] || '').toLowerCase();
-            const benefit = String(item['สวัสดิการ'] || '').toLowerCase();
-            const salary = String(item['ค่าแรง'] || '').toLowerCase();
-            
-            return name.includes(word) || job.includes(word) || benefit.includes(word) || salary.includes(word);
+    function filterData() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allData.filter(item => {
+            // รวมทุกคอลัมน์ที่ต้องการให้ค้นหาเจอ (รวม 'ที่อยู่' แล้ว)
+            return Object.values(item).some(val => 
+                String(val).toLowerCase().includes(term)
+            );
         });
-        showData(filtered);
+        renderTable(filtered);
     }
 
-    // เริ่มทำงานเมื่อเปิดหน้าเว็บ
-    getData();
+    fetchData();
 </script>
-
 </body>
 </html>
